@@ -1,0 +1,50 @@
+.chart-container {
+    overflow: visible !important;
+}
+
+.ds-left-label {
+    min-width: 120px;
+    /* Ensure consistent label column */
+    text-align: right;
+    padding-right: 10px;
+}
+
+.custom-tooltip {
+    position: relative;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.custom-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -6px;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent #ccc transparent transparent;
+}
+
+
+.highcharts-container {
+    overflow: visible !important;
+}
+
+.chart-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    /* avoid pushing navigator */
+}
+
+.highcharts-scrolling-parent {
+    margin-left: 60px;
+    margin-right: 60px;
+    margin-bottom: 100px;
+}
+
+.highcharts-container {
+    overflow: visible !important;
+  }
