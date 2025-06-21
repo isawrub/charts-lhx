@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useLayoutEffect } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import { generateChartConfig, getCustomTooltipConfig, getNavigatorOptionsConfig, getPlotOptionsConfig, parseVisitingDate } from "./utils";
@@ -14,6 +14,21 @@ const ChartAndMock = () => {
     const labTestGroupsCount = analyteEvents?.length || 0;
 
     const chartComponentRef = useRef(null);
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+    useLayoutEffect(() => {
+        const updateSize = () => {
+          if (chartComponentRef.current) {
+            const { clientWidth, clientHeight } = chartComponentRef.current;
+            setDimensions({ width: clientWidth, height: clientHeight });
+          }
+        };
+    
+        // Initial size
+        updateSize();
+    
+      }, []);
+console.log("viewPort H",dimensions.height);    
     const options = {
         chart: {
             alignTicks: false,
@@ -21,13 +36,14 @@ const ChartAndMock = () => {
                 type: 'x',
             },
             panKey: 'shift',
-            height: 480,
+            height: dimensions.height,
             marginLeft: 200,
             marginRight: 40,
             type: 'stock',
             scrollablePlotArea: {
-                minHeight: labTestGroupsCount * (150 + 20),
-                scrollPositionY: 100,
+                minHeight: (labTestGroupsCount-1) * (150 + 40),
+                scrollPositionY: 0,
+                opacity: 0
             },
             borderColor: '#e6e6e6',
             borderWidth: 1,
@@ -44,7 +60,7 @@ const ChartAndMock = () => {
         xAxis: {
             reversed: true,
             type: "datetime",
-            tickInterval: 365 * 24 * 3600 * 1000,
+            tickInterval: 365 * 24 * 3600,
             lineColor: 'white',
             lineWidth: 1,
             gridLineWidth: 0,
@@ -81,7 +97,16 @@ const ChartAndMock = () => {
     };
     // test comments testing
     return (
-        <div ref={chartComponentRef} className="patient-chart-view-container">
+        <div
+            ref={chartComponentRef} className="patient-chart-view-container"
+            style={{
+                width: "100%",
+                height: "150px",
+                border: "1px solid gray",
+                resize: "both",
+                overflow: "visible"
+            }}
+        >
             <HighchartsReact highcharts={Highcharts} constructorType="chart" options={options} />
         </div>
     );
